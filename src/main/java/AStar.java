@@ -15,7 +15,9 @@ public class AStar {
 
 	private int _width;
 
-	public AStar(Node start, Node goal, int[][] rawGraph) {
+	private Node _bestPathEndNode;
+
+	public AStar(Node start, int[][] rawGraph) {
 		//Initialization of global variables;
 		_closedSet = new HashSet<>();
 		_openSet = new HashSet<>();
@@ -35,11 +37,12 @@ public class AStar {
 		}
 
 		_gScore.put(start, 0.0);
-		_fScore.put(start, heuristic_cost_estimate(start, goal));
+		_fScore.put(start, heuristic_cost_estimate(start));
 
 		while (!_openSet.isEmpty()) {
 			Node current = getLowestFScore();
-			if (current.equals(goal)) {
+			if (current.getX() == _width) {
+				_bestPathEndNode = current;
 				break; //Found best path
 			}
 
@@ -55,9 +58,13 @@ public class AStar {
 
 				_cameFrom.put(neighbour, current);
 				_gScore.put(neighbour, tentative_gScore);
-				_fScore.put(neighbour, tentative_gScore + heuristic_cost_estimate(neighbour, goal));
+				_fScore.put(neighbour, tentative_gScore + heuristic_cost_estimate(neighbour));
 			}
 		}
+	}
+
+	public List<Node> getBestPath() {
+		return reconstructPath(_bestPathEndNode);
 	}
 
 	public List<Node> reconstructPath(Node current) {
@@ -80,9 +87,8 @@ public class AStar {
 		return weight;
 	}
 
-	private double heuristic_cost_estimate(Node current, Node goal) {
-		//Diagonal distance
-		return Math.max(Math.abs(current.getX() - goal.getX()), Math.abs(current.getY() - goal.getY()));
+	private double heuristic_cost_estimate(Node current) {
+		return _width - current.getX();
 	}
 
 	private Map<Coordinate, Node> convertGraph(int[][] rawGraph) {
