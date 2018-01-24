@@ -39,12 +39,20 @@ public class BestPath {
 	}
 
 	public void printBestPath() {
+		System.out.println(getBestPath());
+	}
+
+	public String getBestPath() {
 		List<String> pathCoordinates = new ArrayList<>();
 		_bestPath.forEach(node -> pathCoordinates.add("[" + node.getX() + "," + node.getY() + "]"));
 
-		System.out.println("Total Elevation Change: " + _weight);
+		StringBuilder sb = new StringBuilder();
+		sb.append("Total Elevation Change: ").append(_weight).append("\n");
 		for (int i = pathCoordinates.size() - 1; i >= 0; i--) {
-			System.out.println(pathCoordinates.get(i));
+			sb.append(pathCoordinates.get(i)).append("\n");
 		}
+
+		sb.setLength(sb.length() - 1);
+		return sb.toString();
 	}
 }
