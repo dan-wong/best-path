@@ -19,6 +19,7 @@ public class AStarTest {
 		System.out.println((System.nanoTime() - _startTime)/1000000 + "ms");
 	}
 
+	//50ms
 	@Test
 	public void testAStar_BestGreedyPathFunction() {
 		System.out.println("testAStar_BestGreedyPathFunction()");

@@ -1,4 +1,5 @@
-package components;
+import components.Coordinate;
+import components.Node;
 
 import java.util.*;
 
@@ -12,7 +13,9 @@ public class AStar {
 
 	private Map<Coordinate, Node> _graph;
 
-	public AStar(Node start, Node goal, Map<Coordinate, Node> graph) {
+	private int _width;
+
+	public AStar(Node start, Node goal, int[][] rawGraph) {
 		//Initialization of global variables;
 		_closedSet = new HashSet<>();
 		_openSet = new HashSet<>();
@@ -21,7 +24,8 @@ public class AStar {
 		_gScore = new HashMap<>();
 		_fScore = new HashMap<>();
 
-		_graph = graph;
+		_width = rawGraph[0].length;
+		_graph = convertGraph(rawGraph);
 
 		//Setting up initial values
 		_openSet.add(start);
@@ -79,6 +83,18 @@ public class AStar {
 	private double heuristic_cost_estimate(Node current, Node goal) {
 		//Diagonal distance
 		return Math.max(Math.abs(current.getX() - goal.getX()), Math.abs(current.getY() - goal.getY()));
+	}
+
+	private Map<Coordinate, Node> convertGraph(int[][] rawGraph) {
+		Map<Coordinate, Node> graph = new HashMap<>();
+
+		for (int i = 0; i < rawGraph.length; i++) {
+			for (int j = 0; j < rawGraph[0].length; j++) {
+				Node node = new Node(j + 1, i + 1, rawGraph[i][j]);
+				graph.put(new Coordinate(j + 1, i + 1), node);
+			}
+		}
+		return graph;
 	}
 
 	private Node getLowestFScore() {
