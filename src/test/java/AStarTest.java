@@ -10,19 +10,19 @@ public class AStarTest {
 	public AStarTest() {}
 
 	@Before
-	public void setup() {
+	public void before() {
 		_startTime = System.nanoTime();
 	}
 
 	@After
 	public void after() {
-		System.out.println((System.nanoTime() - _startTime)/1000000 + "ms");
+		System.out.print((System.nanoTime() - _startTime)/1000000 + "ms\n");
 	}
 
 	//7ms
 	@Test
 	public void testAStar_BestGreedyPathFunction() {
-		System.out.println("testAStar_BestGreedyPathFunction()");
+		System.out.print("testAStar_BestGreedyPathFunction() - ");
 		int[][] rawGraph = {
 				{3, 6, 3, 7, 2, 5},
 				{1, 4, 2, 4, 1, 4},
@@ -36,7 +36,7 @@ public class AStarTest {
 	//180ms - 30,30,30
 	@Test
 	public void testAStar_withRandomGraph() {
-		System.out.println("testAStar_withRandomGraph()");
+		System.out.print("testAStar_withRandomGraph() - ");
 		int[][] rawGraph = generateGraph(30, 30, 30);
 
 		BestPath bestPath = new BestPath(rawGraph);
@@ -52,7 +52,6 @@ public class AStarTest {
 			}
 		}
 
-		System.out.println("Random Graph Generated");
 		return graph;
 	}
 }
