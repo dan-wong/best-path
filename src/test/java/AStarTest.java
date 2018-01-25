@@ -33,7 +33,7 @@ public class AStarTest {
 		assertEquals(7.0, bestPath.getBestWeight(), 0);
 	}
 
-	//168ms - 30,30,30
+	//80ms
 	@Test
 	public void testAStar_withRandomGraph30() {
 		System.out.print("testAStar_withRandomGraph30() - ");
@@ -43,7 +43,7 @@ public class AStarTest {
 		bestPath.getBestPath();
 	}
 
-	//516ms - 50,50,50
+	//70ms
 	@Test
 	public void testAStar_withRandomGraph50() {
 		System.out.print("testAStar_withRandomGraph50() - ");
@@ -53,7 +53,7 @@ public class AStarTest {
 		bestPath.getBestPath();
 	}
 
-	//9046ms - 100,100,100
+	//665ms
 	@Test
 	public void testAStar_withRandomGraph100() {
 		System.out.print("testAStar_withRandomGraph50() - ");
@@ -61,6 +61,21 @@ public class AStarTest {
 
 		BestPath bestPath = new BestPath(rawGraph);
 		bestPath.getBestPath();
+	}
+
+	//16.0
+	@Test
+	public void testWeightAStar() {
+		System.out.println("testWeightAStar()");
+		int[][] rawGraph = generateGraph(50, 50, 50);
+
+		for (double i=1; i<20; i+=0.5) {
+			long startTime = System.nanoTime();
+			BestPath bestPath = new BestPath(rawGraph);
+			bestPath.setAStarWeight(i);
+			bestPath.getBestPath();
+			System.out.println("Weight: " + i + " - " + (System.nanoTime() - startTime)/1000000 + "ms");
+		}
 	}
 
 	private int[][] generateGraph(int width, int length, int maxValue) {

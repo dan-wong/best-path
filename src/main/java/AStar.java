@@ -17,7 +17,7 @@ public class AStar {
 
 	private Node _bestPathEndNode;
 
-	public AStar(Node start, int[][] rawGraph) {
+	public AStar(Node start, int[][] rawGraph, double aStarWeight) {
 		//Initialization of global variables;
 		_closedSet = new HashSet<>();
 		_openSet = new HashSet<>();
@@ -58,7 +58,7 @@ public class AStar {
 
 				_cameFrom.put(neighbour, current);
 				_gScore.put(neighbour, tentative_gScore);
-				_fScore.put(neighbour, tentative_gScore + heuristic_cost_estimate(neighbour));
+				_fScore.put(neighbour, tentative_gScore + aStarWeight * heuristic_cost_estimate(neighbour));
 			}
 		}
 	}
@@ -67,7 +67,7 @@ public class AStar {
 		return reconstructPath(_bestPathEndNode);
 	}
 
-	public List<Node> reconstructPath(Node current) {
+	private List<Node> reconstructPath(Node current) {
 		List<Node> totalPath = new LinkedList<>();
 		totalPath.add(current);
 

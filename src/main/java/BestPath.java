@@ -5,12 +5,19 @@ import java.util.List;
 
 public class BestPath {
 	private List<Node> _bestPath;
+	private int[][] _rawGraph;
+
 	private double _weight = Double.POSITIVE_INFINITY;
+	private double _aStarWeight = 16.0;
 
 	public BestPath(int[][] rawGraph) {
-		for (int i = 0; i < rawGraph.length; i++) {
-			Node start = new Node(1, i+1, rawGraph[i][0]);
-			AStar astar = new AStar(start, rawGraph);
+		_rawGraph = rawGraph;
+	}
+
+	private void runAStar() {
+		for (int i = 0; i < _rawGraph.length; i++) {
+			Node start = new Node(1, i+1, _rawGraph[i][0]);
+			AStar astar = new AStar(start, _rawGraph, _aStarWeight);
 
 			List<Node> currentPath = astar.getBestPath();
 			double currentPathWeight = astar.getWeight(currentPath);
@@ -21,15 +28,22 @@ public class BestPath {
 		}
 	}
 
+	public void setAStarWeight(double weight) {
+		_aStarWeight = weight;
+	}
+
 	public void printBestPath() {
 		System.out.println(getBestPath());
 	}
 
 	public double getBestWeight() {
+		if (_bestPath == null) runAStar();
 		return _weight;
 	}
 
 	public String getBestPath() {
+		if (_bestPath == null) runAStar();
+
 		List<String> pathCoordinates = new ArrayList<>();
 		_bestPath.forEach(node -> pathCoordinates.add("[" + node.getX() + "," + node.getY() + "]"));
 
